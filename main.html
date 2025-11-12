@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ICDRRMO GPS FTS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <h1>ICDRRMO</h1>
+
+    <div class="menu-section">
+      <h2>Most Recent Calls</h2>
+      <div id="calls-container">
+        <!-- Calls will be injected here by JS -->
+      </div>
+    </div>
+
+    <!--Moves into a different container so that it will be placed at the bottom-->
+    <div class="bottom-buttons">
+    <button class="nav-btn" onclick="location.href='view.php'">Database</button>
+    <button class="nav-btn">List of employees</button>
+    <h1>GPS FTS</h1>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="map-container">
+      <div class="map">
+        <!-- Iligan City ICDRRMO location embedded -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7882.715712640042!2d124.239!3d8.2289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3255757821e034dd%3A0x5a72f391a62e1a9b!2sIligan%20City%20Disaster%20Risk%20Reduction%20and%20Management%20Office%20(ICDRRMO)!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- List of ambulances -->
+    <div class="ambulance-list">
+      <div class="ambulance" id="ambulance1" onclick="openPopup('Ambulance 1')">
+        <span>Ambulance 1</span>
+        <div class="status"></div>
+      </div>
+      <div class="ambulance" id="ambulance2" onclick="openPopup('Ambulance 2')">
+        <span>Ambulance 2</span>
+        <div class="status"></div>
+      </div>
+      <div class="ambulance" id="ambulance3" onclick="openPopup('Ambulance 3')">
+        <span>Ambulance 3</span>
+        <div class="status"></div>
+      </div>
+
+      <button class="create-btn" onclick="openPopup('New Ambulance')">Create new</button>
+    </div>
+  </div>
+
+  <!-- Popup Form -->
+  <div class="popup" id="popup" style="display:none;">
+    <div class="popup-content">
+      <h3 id="popup-title">Ambulance</h3>
+
+      <form id="popup-form">
+      <label>Name:</label>
+      <input id="form-name" name="name" type="text" placeholder="Enter name" required>
+
+      <label>Age:</label>
+      <input id="form-age" name="age" type="number" placeholder="Enter age" required>
+
+      <label>Emergency:</label>
+      <input id="form-emergency" name="emergency" type="text" placeholder="Type of emergency" required>
+
+      <label>Location:</label>
+      <input id="form-location" name="location" type="text" placeholder="Enter location" required>
+
+      <input id="form-ambulance" name="ambulance" type="hidden">
+
+      <div class = "button-container">
+        <button type="submit" id="submit-btn">Done</button>
+        <button type="button" id="cancel-btn" onclick="closePopup()">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+function openPopup(ambulanceName) {
+  document.getElementById("popup").style.display = "flex";
+  document.getElementById("popup-title").innerText = ambulanceName;
+  document.getElementById("form-ambulance").value = ambulanceName;
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+document.getElementById('popup-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch('http://localhost:3000/submit-form', {  
+    method: 'POST',
+    body: formData
+  })
+  .then(r => r.text())
+  .then(result => {
+    if (result.trim() === "success") {
+      alert("✅ Data Saved Successfully!");
+      closePopup();
+      this.reset(); // clears form
+    } else {
+      alert("❌ Error: " + result);
+    }
+  });
+});
+</script>
+
+
+
+</body>
+</html>
