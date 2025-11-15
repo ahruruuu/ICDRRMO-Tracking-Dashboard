@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> Ambulance 2 Dashboard 2</title>
+    <style>
+        .content {
+         max-width: 500px;
+         margin: auto;
+         margin-top: 130px;
+         padding: 30px;
+         border: 4px ;
+         border-style: solid;
+         border-color: rgba(255, 255, 255, 0.4);
+         border-radius: 20px;
+         background-color: #f2faff;
+         display: flex;
+         flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        box-shadow: -20px 25px 40px rgba(0, 0, 0, 0.35);
+        font-size: larger;
+        
+        }
+
+        h2 {
+            color: rgb(54, 54, 54);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
+            align-self: center;
+        }
+
+        h3 {
+            color: rgb(54, 54, 54);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="content"> 
+
+    <h2>Ambulance 2</h2>
+        <h3> Name: <span id="name"></span></h3>
+        <h3> Age: <span id="age"></span></h3>
+        <h3> Emergency: <span id="emergency"></span></h3>
+        <h3> Location: <span id="location"></span></h3>
+
+</div>
+
+<script>
+fetch("http://localhost:3000/get-data/Ambulance 2")
+  .then(res => res.json())
+  .then(data => {
+    if (data.length > 0) {
+      const d = data [0];
+      document.getElementById("name").textContent = d.name;
+      document.getElementById("age").textContent = d.age;
+      document.getElementById("emergency").textContent = d.emergency;
+      document.getElementById("location").textContent = d.location;
+    } else {
+      document.getElementById("name").textContent = "(no data)";
+      document.getElementById("age").textContent = "";
+      document.getElementById("emergency").textContent = "";
+      document.getElementById("location").textContent = "";
+    }
+  });
+</script>
+</body>
+</html>
